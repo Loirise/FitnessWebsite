@@ -1,0 +1,33 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Fitness Website
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-6 px-1">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">Fitness App</h1>
+        </div>
+        {% if request.user.is_authenticated %}
+            <div class="my-2 text-center mark">
+                <span><strong>Welcome, {{ request.user.username }}</strong></span>
+            </div>
+            <div class="mb-2 d-flex">
+                <a href="{% url 'workout_list' pk=request.user.id %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Workouts</a>
+                <a href="{% url 'video_list' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Videos</a>
+                <a href="" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Generate workout</a>
+                <a href="{% url 'send_mail' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Mail</a>
+                <a href="{% url 'logout' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Logout</a>
+            </div>
+        {% else %}
+            <div class="my-2 text-center mark">
+                <span><strong>Please log in or create an account to view more</strong></span>
+            </div>
+            <div class="mb-2 d-flex">
+                <a href="{% url 'login' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Login</a>
+                <a href="{% url 'signup' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Register</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

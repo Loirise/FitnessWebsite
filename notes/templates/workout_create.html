@@ -1,0 +1,33 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Create workout
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-4 px-2 pb-2 text-center">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">
+                Create workout
+            </h1>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title_input">Title</label>
+                <input required name="title" type="text" class="form-control" id="title_input">
+            </div>
+            <div class="form-group">
+                <label for="date_input">Date</label>
+                <input required name="date" type="date" class="form-control" id="date_input">
+            </div>
+            <button type="submit" class="btn btn-success my-2 white_text_button">Submit</button>
+        </form>
+        <div class="d-flex col-4 mx-auto">
+            <a href="{% url 'workout_list' pk=user_id %}" class="mx-auto btn btn-info white_text_button">Cancel</a>
+        </div>
+    </div>
+    
+{% endblock content %}
+
+

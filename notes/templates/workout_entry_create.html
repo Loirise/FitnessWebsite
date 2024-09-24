@@ -1,0 +1,43 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Add exercise
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-4 px-2 pb-2 text-center">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">
+                Add exercise
+            </h1>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exercise">Exercise</label>
+                <select required name="exercise" class="form-select" id="exercise">
+                    {% for id, exer, ctgy, vid in exercises %}
+                        <option value="{{id}}">{{exer}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sets">Sets</label>
+                <input required name="sets" type="number" min="1" class="form-control" id="sets">
+            </div>
+            <div class="form-group">
+                <label for="reps">Reps</label>
+                <input required name="reps" type="number" min="1" class="form-control" id="reps">
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <input required name="weight" type="number" min="0" class="form-control" id="weight">
+            </div>
+            <button type="submit" class="btn btn-success my-2 white_text_button">Submit</button>
+        </form>
+        <div class="d-flex col-4 mx-auto">
+            <a href="{% url 'workout_list' pk=pk %}" class="mx-auto btn btn-info white_text_button">Cancel</a>
+        </div>
+    </div>
+{% endblock content %}
+        

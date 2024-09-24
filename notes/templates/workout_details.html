@@ -1,0 +1,71 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Workout details
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-6 px-1">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">
+                {{ title }}
+            </h1>
+        </div>
+        <div class="my-1">
+            <table class="table table-borderless table-striped text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Exercise</th>
+                        <th scope="col">Sets</th>
+                        <th scope="col">Reps</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for note_id, exercise, sets, reps, weight in exercises %}
+                    <tr>
+                        <td class="col-4">
+                            <p>{{ exercise }}</p>
+                        </td>
+                        <td class="col-2">
+                            <p>{{ sets }}</p>
+                        </td>
+                        <td class="col-2">
+                            <p>{{ reps }}</p>
+                        </td>
+                        <td class="col-2">
+                            <p>{{ weight }}</p>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-success float-end mx-4" data-bs-toggle="dropdown"></button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <span class="dropdown-item">
+                                            <a href="{% url 'workout_editentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Edit</a>
+                                        </span>
+                                        <span class="dropdown-item">
+                                            <a href="{% url 'workout_deleteentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Delete</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <div class="text-center">
+                        <p>No Exercises</p>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mb-3 d-flex">
+            <a href="{% url 'workout_newentry' user_id=user_id workout_id=workout_id %}" class="white_text_button bg-success p-2 mx-auto my-1  text-center rounded">Add exercise</a>
+            <a href="{% url 'workout_list' pk=user_id %}" class="white_text_button bg-success p-2 mx-auto my-1  text-center rounded">Back to workouts</a>
+        </div>
+    </div>
+    
+{% endblock content %}
+        

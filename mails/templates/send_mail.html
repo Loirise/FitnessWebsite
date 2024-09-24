@@ -1,0 +1,36 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Send mail
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-4 px-2 pb-2 text-center">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">
+                Send mail
+            </h1>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="address">To:</label>
+                <input required id="address" type="email" class="form-control" name="address"/>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input required id="subject" class="form-control" name="subject"/>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label><br>
+                <textarea required id="message" class="form-control" name="message"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success my-2 white_text_button">Submit</button>
+        </form>
+        <p>{{ result }}</p>
+        <div class="d-flex col-4 mx-auto">
+            <a href="{% url 'frontpage' %}" class="mx-auto btn btn-info white_text_button my-2">Back to frontpage</a>
+        </div>
+    </div>
+
+{% endblock content %}

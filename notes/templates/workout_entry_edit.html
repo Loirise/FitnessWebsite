@@ -1,0 +1,48 @@
+{% extends "master_template.html" %}
+
+{% block title %}
+    Edit exercise
+{% endblock title %}
+
+{% block content %}
+    <div class="greyborder d-flex flex-column mx-auto col-xl-4 px-2 pb-2 text-center">
+        <div class="mt-1 text-center">
+            <h1 class="display-4 mark">
+                Edit exercise
+            </h1>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exercise">Exercise</label>
+                <select required name="exercise" class="form-select" id="exercise">
+                    {% for id, exer, ctgy, vid in exercises %}
+                        {% if id == form.exercise.value %}
+                            <option selected value="{{id}}">{{exer}}</option>
+                        {% else %}
+                            <option value="{{id}}">{{exer}}</option>
+                        {% endif %}
+                                                
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sets">Sets</label>
+                <input required name="sets" type="number" min="1" value="{{form.sets.value}}" class="form-control" id="sets">
+            </div>
+            <div class="form-group">
+                <label for="reps">Reps</label>
+                <input required name="reps" type="number" min="1" value="{{form.reps.value}}" class="form-control" id="reps">
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <input required name="weight" type="number" min="0" value="{{form.weight.value}}" class="form-control" id="weight">
+            </div>
+            <button type="submit" class="btn btn-success my-2 white_text_button">Submit</button>
+        </form>
+        <div class="d-flex col-4 mx-auto">
+            <a href="{% url 'workout_detail' user_id=user_id workout_id=workout_id %}" class="mx-auto btn btn-info white_text_button">Cancel</a>
+        </div>
+    </div>
+{% endblock content %}
+        

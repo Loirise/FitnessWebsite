@@ -4,17 +4,27 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Workout, Exercise, WorkoutExercises
 from .forms import CreateWorkoutForm, CreateWorkoutEntryForm
+from django.contrib.auth.models import Permission
 
 # Create your views here.
 
 def UserWorkoutsListView(request, pk):
+    if request.user.is_authenticated and request.user.groups.filter(name='Staff').exists():
+        clients = User.objects.filter(groups__name=f'{request.user.username}_clients')
+        workouts = []
+        for client in clients:
+            for workout in Workout.objects.filter(user=client):
+                workouts.append(workout)
+        user_addworkout_perm = True if request.user.has_perm('notes.add_workout') else False
+        return render(request, "workout_list.html", {"workouts": workouts, "user_id": pk, 'has_perms': user_addworkout_perm})
 
     # checks if user is logged in and if logged in user is requesting
     if request.user.is_authenticated and request.user.id == pk:
         # get user by id, also get user workouts
         user = User.objects.filter(id=pk)[0]
         workouts = Workout.objects.filter(user=user.id)
-        return render(request, "workout_list.html", {"workouts": workouts, "user_id": pk})
+        user_addworkout_perm = True if request.user.has_perm('notes.add_workout') else False
+        return render(request, "workout_list.html", {"workouts": workouts, "user_id": pk, 'has_perms': user_addworkout_perm})
     else:
         # not logged in
         return redirect("login")
@@ -37,7 +47,8 @@ def DetailedWorkoutView(request, user_id, workout_id):
             "workout_id": workout_id,
             "title": title,
             "user_id": user_id,
-            "workout_id": workout_id 
+            "workout_id": workout_id,
+            "has_perms": True if request.user.has_perm('notes.change_workout') else False
         }
         return render(request, "workout_details.html", context)
     else:
@@ -47,13 +58,12 @@ def DetailedWorkoutView(request, user_id, workout_id):
 
 def CreateWorkoutView(request, pk):
 
-    if request.user.is_authenticated:
+    clients = [(client.id, client.username) for client in list(User.objects.filter(groups__name=f'{request.user.username}_clients'))]
+    if request.user.is_authenticated and request.user.has_perm('notes.add_workout'):
         if request.method == "POST":
             form = CreateWorkoutForm(request.POST)
-            # update form with users id
-            updated_data = request.POST.copy()
-            updated_data.update({"user": pk})
-            form = CreateWorkoutForm(data=updated_data)
+            print(form.is_valid())
+            print(form)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse_lazy("workout_list", kwargs={'pk': pk}))
@@ -63,7 +73,7 @@ def CreateWorkoutView(request, pk):
         # not logged in
         return redirect("login")
             
-    return render(request, "workout_create.html", {'form': form, 'user_id': pk})
+    return render(request, "workout_create.html", {'form': form, 'clients': clients ,'user_id': pk})
 
 
 def EditWorkoutView(request, user_id, workout_id):

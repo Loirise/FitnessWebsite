@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from user_auth.views import UserSignUpView, UserLoginView, UserLogoutView, FrontPageView
+from user_auth.views import UserSignUpView, UserLoginView, UserLogoutView, FrontPageView, TrainerAddClientView
 from notes.views import UserWorkoutsListView, DetailedWorkoutView, CreateWorkoutView, EditWorkoutView, DeleteWorkoutView, CreateWorkoutEntryView, EditWorkoutEntryView, DeleteWorkoutEntryView
 from videos.views import VideoListView, VideoUploadView
 from mails.views import SendMailView
@@ -31,6 +31,7 @@ urlpatterns = [
     path('login/', UserLoginView, name="login"),
     path('logout/', UserLogoutView, name="logout"),
     path('', FrontPageView, name="frontpage"),
+    path('addclient/', TrainerAddClientView, name="add_client"),
     path('<int:pk>/workouts', UserWorkoutsListView, name="workout_list"),
     path('<int:user_id>/workout/<int:workout_id>', DetailedWorkoutView, name="workout_detail"),
     path('<int:pk>/workouts/new', CreateWorkoutView, name="workout_create"),

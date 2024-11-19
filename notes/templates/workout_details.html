@@ -37,21 +37,25 @@
                         <td class="col-2">
                             <p>{{ weight }}</p>
                         </td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-success float-end mx-4" data-bs-toggle="dropdown"></button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <span class="dropdown-item">
-                                            <a href="{% url 'workout_editentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Edit</a>
-                                        </span>
-                                        <span class="dropdown-item">
-                                            <a href="{% url 'workout_deleteentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Delete</a>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
+                        {% if has_perms %}
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-success float-end mx-4" data-bs-toggle="dropdown"></button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <span class="dropdown-item">
+                                                <a href="{% url 'workout_editentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Edit</a>
+                                            </span>
+                                            <span class="dropdown-item">
+                                                <a href="{% url 'workout_deleteentry' user_id=user_id workout_id=workout_id entry_id=note_id %}" class="browntext">Delete</a>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <div class="text-center">
@@ -62,7 +66,9 @@
             </table>
         </div>
         <div class="mb-3 d-flex">
-            <a href="{% url 'workout_newentry' user_id=user_id workout_id=workout_id %}" class="white_text_button bg-success p-2 mx-auto my-1  text-center rounded">Add exercise</a>
+            {% if has_perms %}
+                <a href="{% url 'workout_newentry' user_id=user_id workout_id=workout_id %}" class="white_text_button bg-success p-2 mx-auto my-1  text-center rounded">Add exercise</a>
+            {% endif %}
             <a href="{% url 'workout_list' pk=user_id %}" class="white_text_button bg-success p-2 mx-auto my-1  text-center rounded">Back to workouts</a>
         </div>
     </div>

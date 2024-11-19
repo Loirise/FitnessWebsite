@@ -15,7 +15,7 @@ class Workout(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     category = models.CharField(max_length=50, null=False, blank=False)
-    video = models.FileField(upload_to="exercises/")  # MEDIA_ROOT/exercises, for date/time add /%Y/%m/%d/
+    video = models.FileField(upload_to="uploads/")  # MEDIA_ROOT/exercises, for date/time add /%Y/%m/%d/
 
     def __str__(self):
         return self.name

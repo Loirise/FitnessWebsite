@@ -16,7 +16,9 @@
             <div class="mb-2 d-flex">
                 <a href="{% url 'workout_list' pk=request.user.id %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Workouts</a>
                 <a href="{% url 'video_list' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Videos</a>
-                <a href="" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Generate workout</a>
+                {% if has_perms %}
+                    <a href="{% url 'add_client' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Add client</a>
+                {% endif %}
                 <a href="{% url 'send_mail' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Mail</a>
                 <a href="{% url 'logout' %}" class="white_text_button bg-success p-2 mx-auto my-1 text-center rounded">Logout</a>
             </div>

@@ -21,6 +21,14 @@
                 <label for="date_input">Date</label>
                 <input required name="date" type="date" class="form-control" id="date_input">
             </div>
+            <div class="form-group">
+                <label for="user_input">Client</label>
+                <select required name="user" class="form-select" id="user">
+                    {% for id, username in clients %}
+                        <option value="{{id}}">{{username}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn-success my-2 white_text_button">Submit</button>
         </form>
         <div class="d-flex col-4 mx-auto">

@@ -22,3 +22,8 @@ class UserSignUpForm(forms.Form):
 class UserLoginForm(forms.Form):
     username = forms.CharField(required=True, max_length=50)
     password = forms.CharField(required=True, widget=forms.PasswordInput())
+
+
+class AddClientForm(forms.Form):
+    user = forms.ModelChoiceField(required=True, queryset=User.objects.values())
+    

@@ -3,7 +3,7 @@ from .models import Workout, Exercise, WorkoutExercises
 from django.contrib.auth.models import User
 
 class CreateWorkoutForm(forms.Form):
-    user = forms.IntegerField(required=True, widget=forms.HiddenInput())
+    user = forms.IntegerField(required=True)
     title = forms.CharField(required=True, max_length=100)
     date = forms.DateField(required=True)
 
@@ -17,7 +17,7 @@ class CreateWorkoutForm(forms.Form):
         workout.save()
         return workout
     
-    def edit(self, id, coomit=True):
+    def edit(self, id, commit=True):
         workout = Workout.objects.filter(id=id)[0]
         workout.title = self.cleaned_data["title"]
         workout.date = self.cleaned_data["date"]

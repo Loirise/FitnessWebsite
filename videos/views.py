@@ -1,21 +1,21 @@
 from django.shortcuts import render, redirect
 from .forms import VideoForm
 from .models import VideoModel
+from django.contrib.auth.models import Permission
 
 # Create your views here.
 
 def VideoListView(request):
-
-    if request.user.is_authenticated and request.user.has_perm('FitVids.view_videomodel'):
+    has_perms = request.user.groups.filter(name='Staff').exists()
+    if request.user.is_authenticated and request.user.has_perm('videos.view_videomodel'):
         posts = VideoModel.objects.all()
-        return render(request, "video_list.html", {'posts': posts})
+        return render(request, "video_list.html", {'posts': posts, 'has_perms': has_perms})
     # not logged in
-    message = "Please log in to view tutorial videos"
-    return render(request, "video_list.html", {'message': message})
+    return redirect("frontpage")
 
 def VideoUploadView(request):
 
-    if request.user.is_authenticated and request.user.has_perm('FitVids.add_videomodel'):
+    if request.user.is_authenticated and request.user.has_perm('videos.add_videomodel'):
         if request.method == 'POST':
             form = VideoForm(request.POST, request.FILES)
             if form.is_valid():
